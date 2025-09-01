@@ -57,6 +57,7 @@ Develop, fine-tune, and validate a GPT-2–based classifier that accurately pred
 
 **IMPLEMENTATION:**
 Open the training notebook in Colab: **[Open Colab Notebook](https://github.com/Aishwarya-chen11/Fine-tuned-LLM-Classification-Model/blob/main/Fine_tuned_LLM_classification_model.ipynb)**
+
 Source dataset (UCI SMS Spam Collection): https://archive.ics.uci.edu/dataset/228/sms+spam+collection.
 
 ---
