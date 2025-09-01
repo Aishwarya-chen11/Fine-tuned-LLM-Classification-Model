@@ -1,4 +1,4 @@
-## Spam SMS Classification — Fine-Tuning GPT-2 (Educational, End-to-End)
+## Spam SMS Classification — Fine-Tuning GPT-2 
 
 A compact, end-to-end project that fine-tunes a pretrained GPT-2 model to classify SMS messages as spam or not spam (ham). The workflow runs from data acquisition → balanced sampling → tokenization & padding → model surgery (adding a classifier head) → training & evaluation → inference & model persistence. It’s designed to be easy to read for recruiters and engineers skimming your repo.
 (Technically: decoder-only Transformer, causal self-attention; complexity per layer ≈ O(B · L² · d) where B=batch, L=sequence length, d=hidden size. With L≈120 the compute is modest and Colab-friendly.)
