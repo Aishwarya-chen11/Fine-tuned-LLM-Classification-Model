@@ -153,54 +153,7 @@ For decoder-only LLMs, the final token’s hidden state summarizes the sequence.
 Expect initial accuracy near 50% (balanced random) before fine-tuning. Accuracy improves within a few epochs; exact numbers depend on seed, hardware, and minor environment differences.
 (Monitor train–val gap for overfitting; adjust weight_decay/dropout or freeze fewer layers if underfitting.)
 
-Inference (Use the model as a spam classifier)
-text_spam = "You are a winner... receive $1000 cash or a $2000 award."
-print(classify_review(text_spam, model, tokenizer, device,
-                      max_length=train_dataset.max_length))
-# → "spam"
-
-text_ham = "Hey, just checking if we're still on for dinner tonight?"
-print(classify_review(text_ham, model, tokenizer, device,
-                      max_length=train_dataset.max_length))
-# → "not spam"
-
-
-classify_review() mirrors dataset preprocessing: encode → (truncate to supported context) → pad → forward pass → argmax over 2 logits.
-(Run under torch.no_grad(); for throughput, batch multiple texts and enable autocast on GPU.)
-
-Reproducibility & Design Notes
-
-Seeds: Use torch.manual_seed(123) and seeded DataFrame shuffles for stable splits.
-
-Context length: Assert the longest training sequence ≤ 1024 (GPT-2 context).
-
-Padding ID: GPT-2 special token 50256 (<|endoftext|>).
-
-Shape fix: Use model.pos_emb.weight.shape[0] for supported context length (prevents accidental truncation to the embedding dimension).
-
-Why undersampling? Keeps runs fast and class balance clean for teaching. For production, consider full data with class weights, focal loss, or oversampling.
-(Also consider threshold calibration (Platt/temperature scaling) for operational use.)
-
-How to run (Colab-friendly)
-
-Run the notebook top-to-bottom.
-
-It downloads data and creates train.csv / validation.csv / test.csv.
-
-Initializes tokenizer/datasets/dataloaders.
-
-Loads GPT-2 weights, swaps the head, sets trainable layers.
-
-Trains for 5 epochs with periodic eval.
-
-Plots loss/accuracy and prints final metrics.
-
-Saves review_classifier.pth.
-
-Test classify_review(...) with your own SMS text.
-(On CUDA: set model.to('cuda'), pin_memory=True, and consider torch.cuda.amp.autocast().)
-
-Libraries Used
+### Libraries Used
 
 Core: torch, torch.utils.data, pandas, numpy
 
@@ -209,21 +162,16 @@ Tokenizer: tiktoken (GPT-2 BPE)
 Utils: urllib.request, ssl, zipfile, pathlib, os
 
 Viz: matplotlib
-(Python ≥3.10; PyTorch 2.x. Match CUDA build to your runtime if using GPU.)
 
-Extensions & Next Steps
+### Extensions & Next Steps
 
-Metrics: Add precision/recall/F1, ROC-AUC, and a confusion matrix.
+**Metrics:** Add precision/recall/F1, ROC-AUC, and a confusion matrix.
 
-Regularization: Tune transformer drop_rate and optimizer weight_decay; add early stopping.
+**Regularization:** Tune transformer drop_rate and optimizer weight_decay; add early stopping.
 
-Data: Train on the full dataset (no undersampling) with class weighting.
+**Tokenization:** Compare GPT-2 BPE vs WordPiece; experiment with smaller context lengths for speed.
 
-Head variants: Try mean-pooling all token states or a small MLP head.
-
-Tokenization: Compare GPT-2 BPE vs WordPiece; experiment with smaller context lengths for speed.
-
-Deployment: Export to TorchScript or ONNX; wrap inference in a minimal FastAPI service.
+**Deployment:** Export to TorchScript or ONNX; wrap inference in a minimal FastAPI service.
 (For privacy, consider client-side tokenization and PII scrubbing before inference.)
 
 Files Produced (during one run)
@@ -237,9 +185,7 @@ loss-plot.pdf, accuracy-plot.pdf
 review_classifier.pth (saved weights)
 (Optionally store max_length.json and tokenizer.json for portable serving.)
 
-Why this project is portfolio-worthy
-
-Shows clean ML reasoning: class balance, seeded splits, appropriate loss/metrics.
+**Why this project is portfolio-worthy**
 
 Demonstrates Transformer adaptation for classification (head swap + selective fine-tuning).
 
