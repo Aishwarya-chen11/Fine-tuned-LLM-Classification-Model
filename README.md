@@ -57,7 +57,7 @@ Develop, fine-tune, and validate a GPT-2–based classifier that accurately pred
 
 **IMPLEMENTATION:**
 Open the training notebook in Colab: **[Open Colab Notebook](https://github.com/Aishwarya-chen11/Fine-tuned-LLM-Classification-Model/blob/main/Fine_tuned_LLM_classification_model.ipynb)**
-Source dataset (UCI SMS Spam Collection). After first run, reusable splits and artifacts are saved locally.
+Source dataset (UCI SMS Spam Collection): https://archive.ics.uci.edu/dataset/228/sms+spam+collection.
 
 ---
 
@@ -192,25 +192,11 @@ Collect hard negatives (false negatives/positives) into a feedback dataset for s
 * **Insight:** Spam campaigns often spike at certain hours/days.
 * **Recommendation:** Add **temporal features** to downstream risk scoring or rate limiting.
 
-*(Include plots from your EDA notebook as images in your repo if available.)*
-
 ---
 
 **Conclusion**
 The GPT-2 fine-tuning approach provides a practical, compute-efficient path to high-quality SMS spam detection. With deterministic preprocessing, selective unfreezing, and clear evaluation, this project is **deployment-ready** in spirit and **teachable** in form. Extending with calibration, class-weighted training on the full distribution, and drift-aware monitoring will further harden the system for production.
 
 ---
-
-**Notebook & Assets**
-
-* Training & evaluation: **[Open Colab Notebook](add_your_colab_link_here)**
-* Artifacts: `loss-plot.pdf`, `accuracy-plot.pdf`, `review_classifier.pth`
-* Data splits: `train.csv`, `validation.csv`, `test.csv`
-
-**Repository Hints**
-
-* `/notebooks/spam_gpt2_classifier.ipynb`
-* `/artifacts/loss-plot.pdf`, `/artifacts/accuracy-plot.pdf`
-* `/data/sms_spam_collection/SMSSpamCollection.tsv`
 
 By adopting the recommendations above—especially **threshold calibration**, **class-weighted loss** on the original distribution, and **continuous monitoring**—teams can reduce spam exposure while maintaining excellent user experience and auditability.
